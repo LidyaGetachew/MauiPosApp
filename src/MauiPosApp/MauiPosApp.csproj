@@ -10,6 +10,7 @@
     <ApplicationVersion>1.0</ApplicationVersion>
     <UseMaui>true</UseMaui>
     <UseMauiTizen>false</UseMauiTizen>
+    <NoWarn>$(NoWarn);XC0022;XC0025;XC0045;CS0618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
