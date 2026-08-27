@@ -1,0 +1,42 @@
+name: .NET MAUI POS CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 'feature/**'
+      - 'bugfix/**'
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-and-test:
+    name: Build & Run Automated Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK (9.0.x)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore MauiPosApp.sln
+
+      - name: Build Solution
+        run: dotnet build MauiPosApp.sln --configuration Release --no-restore
+
+      - name: Execute xUnit Test Suite (12 Tests)
+        run: dotnet test tests/MauiPosApp.Tests/MauiPosApp.Tests.csproj --configuration Release --no-build --verbosity normal
+
+      - name: Publish Build Output Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: maui-pos-app-binary
+          path: src/MauiPosApp/bin/Release/net9.0/
