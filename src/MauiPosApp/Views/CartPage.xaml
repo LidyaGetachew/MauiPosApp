@@ -3,7 +3,7 @@
              xmlns:vm="clr-namespace:MauiPosApp.ViewModels"
              xmlns:models="clr-namespace:MauiPosApp.Models"
              x:Class="MauiPosApp.Views.CartPage"
-             Title="Order Cart & Checkout">
+             Title="Order Cart &amp; Checkout">
 
     <Grid ColumnDefinitions="*,360" Padding="16" ColumnSpacing="16">
 

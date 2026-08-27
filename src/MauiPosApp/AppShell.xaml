@@ -8,7 +8,7 @@
         <Tab Title="Product Catalog" Icon="catalog.png">
             <ShellContent ContentTemplate="{DataTemplate views:ProductsPage}" />
         </Tab>
-        <Tab Title="Cart & Checkout" Icon="cart.png">
+        <Tab Title="Cart &amp; Checkout" Icon="cart.png">
             <ShellContent ContentTemplate="{DataTemplate views:CartPage}" />
         </Tab>
         <Tab Title="Order History" Icon="history.png">

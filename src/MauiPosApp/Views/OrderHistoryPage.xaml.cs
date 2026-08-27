@@ -1,6 +1,6 @@
 namespace MauiPosApp.Views;
 
-public partial class OrderHistoryPage : ContentPage
+public partial class OrderHistoryPage
 {
     public OrderHistoryPage(ViewModels.OrderHistoryViewModel viewModel)
     {

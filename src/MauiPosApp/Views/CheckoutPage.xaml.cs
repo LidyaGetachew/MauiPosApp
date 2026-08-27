@@ -1,6 +1,6 @@
 namespace MauiPosApp.Views;
 
-public partial class CheckoutPage : ContentPage
+public partial class CheckoutPage
 {
     public CheckoutPage(ViewModels.CheckoutViewModel viewModel)
     {
