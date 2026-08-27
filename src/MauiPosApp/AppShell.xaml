@@ -1,0 +1,18 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:MauiPosApp.Views"
+       x:Class="MauiPosApp.AppShell"
+       Title="MAUI POS Cashier Checkout">
+
+    <TabBar>
+        <Tab Title="Product Catalog" Icon="catalog.png">
+            <ShellContent ContentTemplate="{DataTemplate views:ProductsPage}" />
+        </Tab>
+        <Tab Title="Cart & Checkout" Icon="cart.png">
+            <ShellContent ContentTemplate="{DataTemplate views:CartPage}" />
+        </Tab>
+        <Tab Title="Order History" Icon="history.png">
+            <ShellContent ContentTemplate="{DataTemplate views:OrderHistoryPage}" />
+        </Tab>
+    </TabBar>
+</Shell>
