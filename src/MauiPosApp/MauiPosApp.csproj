@@ -9,6 +9,7 @@
     <ApplicationId>com.companyname.mauiposapp</ApplicationId>
     <ApplicationVersion>1.0</ApplicationVersion>
     <UseMaui>true</UseMaui>
+    <UseMauiTizen>false</UseMauiTizen>
   </PropertyGroup>
 
   <ItemGroup>

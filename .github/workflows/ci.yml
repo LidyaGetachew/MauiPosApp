@@ -26,6 +26,9 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Install / Restore Workloads
+        run: dotnet workload restore src/MauiPosApp/MauiPosApp.csproj
+
       - name: Restore Dependencies
         run: dotnet restore src/MauiPosApp/MauiPosApp.csproj
 
