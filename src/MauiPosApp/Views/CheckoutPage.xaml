@@ -1,0 +1,61 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiPosApp.ViewModels"
+             x:Class="MauiPosApp.Views.CheckoutPage"
+             Title="Cashier Checkout">
+
+    <ScrollView Padding="20">
+        <StackLayout Spacing="20" MaximumWidthRequest="600" HorizontalOptions="Center">
+
+            <!-- Title Header -->
+            <Label Text="Payment & Confirmation" FontSize="24" FontAttributes="Bold" TextColor="#1A202C" HorizontalOptions="Center" />
+
+            <!-- Payment Method Selector -->
+            <Frame BorderColor="#CBD5E0" CornerRadius="12" Padding="16" BackgroundColor="White" HasShadow="True">
+                <StackLayout Spacing="12">
+                    <Label Text="Select Payment Method:" FontSize="16" FontAttributes="Bold" TextColor="#2D3748" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Grid.Column="0" Text="💵 Cash" Command="{Binding SelectPaymentMethodCommand}" CommandParameter="Cash" BackgroundColor="#38A169" TextColor="White" FontSize="16" FontAttributes="Bold" CornerRadius="8" HeightRequest="44" />
+                        <Button Grid.Column="1" Text="💳 Card" Command="{Binding SelectPaymentMethodCommand}" CommandParameter="Card" BackgroundColor="#2B6CB0" TextColor="White" FontSize="16" FontAttributes="Bold" CornerRadius="8" HeightRequest="44" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <!-- Cash Tender Calculation Section -->
+            <Frame BorderColor="#CBD5E0" CornerRadius="12" Padding="16" BackgroundColor="#F7FAFC" HasShadow="True">
+                <StackLayout Spacing="12">
+                    <Label Text="Order Total & Cash Tendered" FontSize="16" FontAttributes="Bold" TextColor="#2D3748" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0" Text="Grand Total Due:" FontSize="18" FontAttributes="Bold" TextColor="#1A202C" />
+                        <Label Grid.Column="1" Text="{Binding GrandTotal, StringFormat='${0:F2}'}" FontSize="22" FontAttributes="Bold" TextColor="#2B6CB0" />
+                    </Grid>
+
+                    <StackLayout Spacing="6">
+                        <Label Text="Cash Tendered Amount ($):" FontSize="14" TextColor="#4A5568" />
+                        <Entry Text="{Binding CashTendered}" Keyboard="Numeric" Placeholder="0.00" FontSize="18" HorizontalTextAlignment="End" />
+                    </StackLayout>
+
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                        <Label Grid.Column="0" Text="Change Due to Customer:" FontSize="18" FontAttributes="Bold" TextColor="#2D3748" />
+                        <Label Grid.Column="1" Text="{Binding ChangeGiven, StringFormat='${0:F2}'}" FontSize="22" FontAttributes="Bold" TextColor="#38A169" />
+                    </Grid>
+
+                    <Label Text="{Binding StatusMessage}" TextColor="#E53E3E" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" />
+                </StackLayout>
+            </Frame>
+
+            <!-- Confirm Order Button -->
+            <Button Text="Complete Checkout & Print Receipt 🧾" Command="{Binding ConfirmCheckoutCommand}" BackgroundColor="#38A169" TextColor="White" FontSize="18" FontAttributes="Bold" CornerRadius="10" HeightRequest="54" />
+
+            <!-- Receipt Modal / Box View -->
+            <Frame BorderColor="#319795" CornerRadius="12" Padding="16" BackgroundColor="#FFFFF0" HasShadow="True" IsVisible="{Binding IsOrderConfirmed}">
+                <StackLayout Spacing="12">
+                    <Label Text="✅ Order Completed Successfully!" FontSize="18" FontAttributes="Bold" TextColor="#276749" HorizontalOptions="Center" />
+                    <Editor Text="{Binding ReceiptText}" FontFamily="Monospace" FontSize="12" HeightRequest="220" IsReadOnly="True" BackgroundColor="#FFFFF0" />
+                    <Button Text="New Order / Clear" Command="{Binding ResetCheckoutCommand}" BackgroundColor="#2B6CB0" TextColor="White" CornerRadius="6" HorizontalOptions="Center" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

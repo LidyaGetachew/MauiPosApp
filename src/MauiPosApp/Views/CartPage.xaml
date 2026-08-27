@@ -1,0 +1,95 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiPosApp.ViewModels"
+             xmlns:models="clr-namespace:MauiPosApp.Models"
+             x:Class="MauiPosApp.Views.CartPage"
+             Title="Order Cart & Checkout">
+
+    <Grid ColumnDefinitions="*,360" Padding="16" ColumnSpacing="16">
+
+        <!-- Left Column: Active Cart Line Items -->
+        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="12">
+            <Label Grid.Row="0" Text="Current Order Cart" FontSize="20" FontAttributes="Bold" TextColor="#1A202C" />
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Items}">
+                <CollectionView.EmptyView>
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8">
+                        <Label Text="🛒 Cart is empty" FontSize="18" FontAttributes="Bold" TextColor="#A0AEC0" HorizontalOptions="Center" />
+                        <Label Text="Tap products from the catalog to add items." TextColor="#718096" HorizontalOptions="Center" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:CartItem">
+                        <Frame BorderColor="#E2E8F0" CornerRadius="8" Padding="12" Margin="0,0,0,8" BackgroundColor="White">
+                            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                                <StackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="{Binding Product.Name}" FontAttributes="Bold" FontSize="16" TextColor="#2D3748" />
+                                    <Label Text="{Binding Product.Price, StringFormat='${0:F2} each'}" FontSize="12" TextColor="#718096" />
+                                </StackLayout>
+
+                                <StackLayout Grid.Column="1" Orientation="Horizontal" Spacing="4" VerticalOptions="Center">
+                                    <Button Text="-" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CartViewModel}}, Path=DecrementQuantityCommand}" CommandParameter="{Binding .}" WidthRequest="32" HeightRequest="32" CornerRadius="16" BackgroundColor="#E2E8F0" TextColor="#2D3748" Padding="0" />
+                                    <Label Text="{Binding Quantity}" FontSize="16" FontAttributes="Bold" VerticalOptions="Center" Margin="8,0" />
+                                    <Button Text="+" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CartViewModel}}, Path=IncrementQuantityCommand}" CommandParameter="{Binding .}" WidthRequest="32" HeightRequest="32" CornerRadius="16" BackgroundColor="#E2E8F0" TextColor="#2D3748" Padding="0" />
+                                </StackLayout>
+
+                                <Label Grid.Column="2" Text="{Binding Subtotal, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#2B6CB0" VerticalOptions="Center" WidthRequest="70" HorizontalTextAlignment="End" />
+                                <Button Grid.Column="3" Text="❌" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CartViewModel}}, Path=RemoveItemCommand}" CommandParameter="{Binding .}" BackgroundColor="Transparent" TextColor="#E53E3E" WidthRequest="36" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="2" Text="Clear Entire Cart" Command="{Binding ClearCartCommand}" BackgroundColor="#EDF2F7" TextColor="#E53E3E" CornerRadius="6" HorizontalOptions="Start" />
+        </Grid>
+
+        <!-- Right Column: Order Summary & Discount Controls -->
+        <Frame Grid.Column="1" BorderColor="#CBD5E0" CornerRadius="12" Padding="16" BackgroundColor="#F7FAFC" HasShadow="True">
+            <StackLayout Spacing="16">
+                <Label Text="Order Summary" FontSize="20" FontAttributes="Bold" TextColor="#1A202C" />
+
+                <!-- Discount Input Section -->
+                <Frame BorderColor="#E2E8F0" CornerRadius="8" Padding="8" BackgroundColor="White">
+                    <StackLayout Spacing="8">
+                        <Label Text="Apply Promo / Discount:" FontSize="12" FontAttributes="Bold" TextColor="#4A5568" />
+                        <StackLayout Orientation="Horizontal" Spacing="8">
+                            <Entry Text="{Binding DiscountInput}" Keyboard="Numeric" Placeholder="0" WidthRequest="80" />
+                            <Picker SelectedItem="{Binding DiscountType}" WidthRequest="90">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Percent</x:String>
+                                        <x:String>Flat</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                            <Button Text="Apply" Command="{Binding ApplyDiscountCommand}" BackgroundColor="#319795" TextColor="White" CornerRadius="6" />
+                        </StackLayout>
+                        <Label Text="{Binding ErrorMessage}" TextColor="#E53E3E" FontSize="12" IsVisible="{Binding ErrorMessage, Converter={StaticResource Key=StringIsNotNullOrEmptyConverter}}" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Calculations Breakdown -->
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="8">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Subtotal:" FontSize="14" TextColor="#4A5568" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Subtotal, StringFormat='${0:F2}'}" FontSize="14" FontAttributes="Bold" TextColor="#2D3748" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Text="Discount:" FontSize="14" TextColor="#E53E3E" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding DiscountAmount, StringFormat='-${0:F2}'}" FontSize="14" FontAttributes="Bold" TextColor="#E53E3E" />
+
+                    <Label Grid.Row="2" Grid.Column="0" Text="Sales Tax (8.5%):" FontSize="14" TextColor="#4A5568" />
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding TaxAmount, StringFormat='${0:F2}'}" FontSize="14" FontAttributes="Bold" TextColor="#2D3748" />
+
+                    <BoxView Grid.Row="3" Grid.ColumnSpan="2" HeightRequest="1" Color="#CBD5E0" Margin="0,4" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0" Text="Grand Total:" FontSize="20" FontAttributes="Bold" TextColor="#1A202C" />
+                    <Label Grid.Column="1" Text="{Binding GrandTotal, StringFormat='${0:F2}'}" FontSize="24" FontAttributes="Bold" TextColor="#2B6CB0" />
+                </Grid>
+
+                <Button Text="Proceed to Checkout 💳" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CartViewModel}}, Path=ApplyDiscountCommand}" BackgroundColor="#2B6CB0" TextColor="White" FontSize="16" FontAttributes="Bold" CornerRadius="8" HeightRequest="48" Margin="0,16,0,0" />
+            </StackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>
