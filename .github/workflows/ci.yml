@@ -27,13 +27,13 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore Dependencies
-        run: dotnet restore MauiPosApp.sln
+        run: dotnet restore src/MauiPosApp/MauiPosApp.csproj
 
-      - name: Build Solution
-        run: dotnet build MauiPosApp.sln --configuration Release --no-restore
+      - name: Build Application
+        run: dotnet build src/MauiPosApp/MauiPosApp.csproj --configuration Release --no-restore
 
       - name: Execute xUnit Test Suite (12 Tests)
-        run: dotnet test tests/MauiPosApp.Tests/MauiPosApp.Tests.csproj --configuration Release --no-build --verbosity normal
+        run: dotnet test tests/MauiPosApp.Tests/MauiPosApp.Tests.csproj --configuration Release --verbosity normal
 
       - name: Publish Build Output Artifacts
         uses: actions/upload-artifact@v4
