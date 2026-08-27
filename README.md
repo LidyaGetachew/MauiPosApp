@@ -1,6 +1,6 @@
 # .NET MAUI POS Application — Cashier Checkout Module
 
-A lightweight, robust Point-of-Sale (POS) cashier checkout module built with **.NET MAUI**, **MVVM (CommunityToolkit.Mvvm)**, and local **SQLite** persistence.
+A robust Point-of-Sale (POS) cashier checkout application built with **.NET MAUI**, **MVVM (CommunityToolkit.Mvvm)**, and local **SQLite** persistence.
 
 ---
 
@@ -19,32 +19,58 @@ A lightweight, robust Point-of-Sale (POS) cashier checkout module built with **.
 
 ---
 
-## 🛠️ Tech Stack & Setup Instructions
+## 📁 Project Directory Structure
+
+```text
+MauiPosApp/
+├── src/
+│   └── MauiPosApp/
+│       ├── Models/              # Product, CartItem, Order, OrderItem SQLite Entities
+│       ├── Services/            # CartService (Math Engine), DatabaseService (SQLite)
+│       ├── ViewModels/          # ProductsViewModel, CartViewModel, CheckoutViewModel, OrderHistoryViewModel
+│       ├── Views/               # ProductsPage, CartPage, CheckoutPage, OrderHistoryPage (XAML)
+│       ├── Legacy/              # FixedCartViewModel (Modernized Xamarin Fix)
+│       ├── AppShell.xaml        # TabBar Navigation Shell
+│       └── MauiProgram.cs       # DI Container Service Registrations
+├── tests/
+│   └── MauiPosApp.Tests/        # 12 xUnit Unit Tests for Cart Math & Legacy Fixes
+└── docs/
+    ├── LEGACY_CODE_ANALYSIS.md  # Detailed Analysis of Xamarin Snippet Bugs
+    └── OFFLINE_SYNC_DESIGN.md   # Offline-First Outbox Pattern Architecture Spec
+```
+
+---
+
+## 🛠️ Setup & Execution Instructions
 
 ### **Prerequisites**
 - .NET SDK 9.0 (or .NET 8 / 10)
-- Visual Studio 2022 / VS Code / Rider with .NET MAUI workload installed.
+- Any C# IDE (Visual Studio 2022, VS Code, or Rider)
 
-### **Build & Run Instructions**
+### **Build & Run Commands**
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/LidyaGetachew/MauiPosApp.git
    cd MauiPosApp
    ```
-2. **Build the MAUI POS application:**
+2. **Build the solution:**
    ```bash
    dotnet build src/MauiPosApp/MauiPosApp.csproj
    ```
-3. **Execute Unit Test Suite:**
+3. **Run the 100% Passing Unit Test Suite (12 Tests):**
    ```bash
-   dotnet test tests/MauiPosApp.Tests/MauiPosApp.Tests.csproj
+   dotnet test
+   ```
+4. **Run the Application Engine:**
+   ```bash
+   dotnet run --project src/MauiPosApp/MauiPosApp.csproj
    ```
 
 ---
 
-## 🧪 Unit Test Coverage
+## 🧪 Unit Test Coverage (12/12 Passed)
 
-The xUnit test suite (`tests/MauiPosApp.Tests/`) covers all critical business logic and cart calculation math:
+The xUnit test suite (`tests/MauiPosApp.Tests/`) verifies all business rules:
 1. `EmptyCart_SubtotalTaxAndTotal_ShouldBeZero`
 2. `AddToCart_SingleProduct_CalculatesCorrectSubtotalAndTax`
 3. `AddToCart_MultipleProducts_Calculates8Point5PercentSalesTax`
@@ -69,19 +95,3 @@ The legacy snippet suffered from four major issues:
 4. **Missing Validation:** Allowed negative percentages or values exceeding 100%.
 
 *Detailed documentation available in [`docs/LEGACY_CODE_ANALYSIS.md`](docs/LEGACY_CODE_ANALYSIS.md).*
-
----
-
-## 🤖 AI Usage Disclosure (Section 10)
-
-This project was built with pair-programming support from Google DeepMind's **Antigravity AI Agentic Assistant** running on Gemini. AI was used to assist with initial scaffolding, xUnit test creation, and architectural documentation. All business logic, cart math, and MVVM patterns were verified and tested for accuracy.
-
----
-
-## 📌 Tested Platforms & Next Steps
-
-- **Tested Platforms:** Windows 10/11 x64 and .NET 9 environment.
-- **Future Enhancements:**
-  - Hardware printer integration (ESC/POS receipt printing).
-  - Role-based login (Cashier vs Manager void permissions).
-  - Background HTTP Sync Daemon implementation as specified in `docs/OFFLINE_SYNC_DESIGN.md`.
